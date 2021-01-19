@@ -104,10 +104,5 @@ registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_nginx_ssl_certificat
 {% endfor %}
 {% endif %}
 
-registry['enable'] = {{ gitlab_registry_enable }}
-registry_external_url "{{ gitlab_registry_external_url }}"
-registry_nginx['ssl_certificate'] = "{{ gitlab_registry_nginx_ssl_certificate }}"
-registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_nginx_ssl_certificate_key }}"
-
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
