@@ -22,13 +22,12 @@ gitlab_registry_ssl_certificate_key: "/etc/gitlab/ssl/{{ gitlab_registry_domain 
 gitlab_create_self_signed_cert: "false"
 gitlab_self_signed_cert_subj: "/C=US/ST=Missouri/L=Saint Louis/O=IT/CN={{ gitlab_domain }}"
 gitlab_registry_create_self_signed_cert: "false"
-gitlab_registry_self_signed_cert_subj: "/C=US/ST=Missouri/L=Saint Louis/O=IT/CN={{ gitlab_domain }}"
+gitlab_registry_self_signed_cert_subj: "/C=US/ST=Missouri/L=Saint Louis/O=IT/CN={{ gitlab_registry_domain }}"
 
 # LDAP Configuration.
 gitlab_ldap_enabled: "false"
 gitlab_ldap_servers:
     main: {}
-
 gitlab_ldap_label: 'LDAP'
 gitlab_ldap_host: "example.com"
 gitlab_ldap_port: "389"
@@ -95,3 +94,11 @@ gitlab_email_enabled: "false"
 gitlab_email_from: "gitlab@example.com"
 gitlab_email_display_name: "Gitlab"
 gitlab_email_reply_to: "gitlab@example.com"
+
+# LetsEncrypt configuration.
+gitlab_letsencrypt_enable: "false"
+gitlab_letsencrypt_contact_emails: ["gitlab@example.com"]
+gitlab_letsencrypt_auto_renew_hour: 1
+gitlab_letsencrypt_auto_renew_minute: 30
+gitlab_letsencrypt_auto_renew_day_of_month: "*/7"
+gitlab_letsencrypt_auto_renew: true
