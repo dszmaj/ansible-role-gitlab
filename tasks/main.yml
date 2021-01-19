@@ -37,7 +37,7 @@
 - name: Define the Gitlab package name.
   set_fact:
     gitlab_package_name: "{{ gitlab_edition }}{{ gitlab_package_version_separator }}{{ gitlab_version }}"
-  when: gitlab_version | default(false)
+  when: gitlab_version | bool | default(false)
 
 - name: Install GitLab
   package:
@@ -45,6 +45,8 @@
     state: present
   async: 300
   poll: 5
+  environment:
+    EXTERNAL_URL: "{{ gitlab_external_url }}"
   when: not gitlab_file.stat.exists
 
 # Start and configure GitLab. Sometimes the first run fails, but after that,
