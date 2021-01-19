@@ -37,13 +37,13 @@
 - name: Define the Gitlab package name.
   set_fact:
     gitlab_package_name: "{{ gitlab_edition }}{{ gitlab_package_version_separator }}{{ gitlab_version }}"
-  when: gitlab_version | bool | default(false)
+  when: gitlab_version | default(false)
 
 - name: Install GitLab
   package:
     name: "{{ gitlab_package_name | default(gitlab_edition) }}"
     state: present
-  async: 300
+  async: 600
   poll: 5
   environment:
     EXTERNAL_URL: "{{ gitlab_external_url }}"
