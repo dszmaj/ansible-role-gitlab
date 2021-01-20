@@ -51,8 +51,6 @@
     state: present
   async: 600
   poll: 5
-  environment:
-    EXTERNAL_URL: "{{ gitlab_external_url }}"
   when: not gitlab_file.stat.exists
 
 # Start and configure GitLab. Sometimes the first run fails, but after that,
