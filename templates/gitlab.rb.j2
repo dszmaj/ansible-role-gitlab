@@ -3,7 +3,7 @@ external_url "{{ gitlab_external_url }}"
 
 # GitLab registry.
 {% if gitlab_registry_external_url is defined %}
-registry['enable'] = 'true'
+registry['enable'] = "true"
 registry_external_url "{{ gitlab_registry_external_url }}"
 registry_nginx['ssl_certificate'] = "{{ gitlab_registry_ssl_certificate }}"
 registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_ssl_certificate_key }}"
@@ -11,8 +11,8 @@ registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_ssl_certificate_key 
 
 # gitlab.yml configuration
 gitlab_rails['time_zone'] = "{{ gitlab_time_zone }}"
-gitlab_rails['backup_keep_time'] = {{ gitlab_backup_keep_time }}
-gitlab_rails['gitlab_email_enabled'] = {{ gitlab_email_enabled }}
+gitlab_rails['backup_keep_time'] = "{{ gitlab_backup_keep_time }}"
+gitlab_rails['gitlab_email_enabled'] = "{{ gitlab_email_enabled }}"
 {% if gitlab_email_enabled == "true" %}
 gitlab_rails['gitlab_email_from'] = "{{ gitlab_email_from }}"
 gitlab_rails['gitlab_email_display_name'] = "{{ gitlab_email_display_name }}"
@@ -23,7 +23,7 @@ gitlab_rails['gitlab_email_reply_to'] = "{{ gitlab_email_reply_to }}"
 gitlab_rails['gitlab_default_theme'] = "{{ gitlab_default_theme }}"
 
 # Whether to redirect http to https.
-nginx['redirect_http_to_https'] = {{ gitlab_redirect_http_to_https }}
+nginx['redirect_http_to_https'] = "{{ gitlab_redirect_http_to_https }}"
 nginx['ssl_certificate'] = "{{ gitlab_ssl_certificate }}"
 nginx['ssl_certificate_key'] = "{{ gitlab_ssl_certificate_key }}"
 
@@ -44,7 +44,7 @@ gitlab_rails['backup_path'] = "{{ gitlab_backup_path }}"
 
 # These settings are documented in more detail at
 # https://gitlab.com/gitlab-org/gitlab-ce/blob/master/config/gitlab.yml.example#L118
-gitlab_rails['ldap_enabled'] = {{ gitlab_ldap_enabled }}
+gitlab_rails['ldap_enabled'] = "{{ gitlab_ldap_enabled }}"
 {% if gitlab_ldap_enabled == "true" %}
 gitlab_rails['ldap_servers'] = YAML.load <<-EOS
 {% for name, values in gitlab_ldap_servers.items() %}
