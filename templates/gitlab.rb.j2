@@ -123,6 +123,12 @@ gitlab_rails['smtp_ca_path'] = "{{ gitlab_smtp_ca_path }}"
 {% if gitlab_smtp_ca_file is defined %}
 gitlab_rails['smtp_ca_file'] = "{{ gitlab_smtp_ca_file }}"
 {% endif %}
+{% if gitlab_email_from is defined %}
+gitlab_rails['gitlab_email_from'] = "{{ gitlab_email_from }}"
+{% endif %}
+{% if gitlab_email_reply_to is defined %}
+gitlab_rails['gitlab_email_reply_to'] = "{{ gitlab_email_reply_to }}"
+{% endif %}
 {% endif %}
 
 # 2-way SSL Client Authentication.
