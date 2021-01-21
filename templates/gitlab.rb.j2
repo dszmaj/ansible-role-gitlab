@@ -93,6 +93,7 @@ nginx['listen_https'] = {{ gitlab_nginx_listen_https }}
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md
 gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable }}
 {% if gitlab_smtp_enable == "true" %}
+gitlab_rails['gitlab_email_enabled'] = true
 gitlab_rails['smtp_address'] = "{{ gitlab_smtp_address }}"
 gitlab_rails['smtp_port'] = {{ gitlab_smtp_port }}
 {% if gitlab_smtp_user_name is defined %}
