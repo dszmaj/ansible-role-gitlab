@@ -3,11 +3,13 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Check if GitLab configuration file already exists.
-  stat: path=/etc/gitlab/gitlab.rb
+  stat:
+    path: /etc/gitlab/gitlab.rb
   register: gitlab_config_file
 
 - name: Check if GitLab is already installed.
-  stat: path=/usr/bin/gitlab-ctl
+  stat:
+    path: /usr/bin/gitlab-ctl
   register: gitlab_file
 
 # Install GitLab and its dependencies.
@@ -53,9 +55,9 @@
 # Start and configure GitLab. Sometimes the first run fails, but after that,
 # restarts fix problems, so ignore failures on this run.
 - name: Reconfigure GitLab (first run).
-  command: >
-    gitlab-ctl reconfigure
-    creates=/var/opt/gitlab/bootstrapped
+  command:
+    cmd: gitlab-ctl reconfigure
+    creates: /var/opt/gitlab/bootstrapped
   failed_when: false
 
 - name: Create GitLab SSL configuration folder.
@@ -65,22 +67,19 @@
     owner: root
     group: root
     mode: 0700
-  when: gitlab_create_self_signed_cert | bool or
-        gitlab_registry_create_self_signed_cert | bool
-
-- name: Create self-signed gitlab certificate.
-  command: >
-    openssl req -new -nodes -x509 -subj "{{ gitlab_self_signed_cert_subj }}"
-    -days 3650 -keyout {{ gitlab_ssl_certificate_key }} -out {{ gitlab_ssl_certificate }} -extensions v3_ca
-    creates={{ gitlab_ssl_certificate }}
   when: gitlab_create_self_signed_cert | bool
 
-- name: Create self-signed registry certificate.
-  command: >
-    openssl req -new -nodes -x509 -subj "{{ gitlab_registry_self_signed_cert_subj }}"
-    -days 3650 -keyout {{ gitlab_registry_ssl_certificate_key }} -out {{ gitlab_registry_ssl_certificate }} -extensions v3_ca
-    creates={{ gitlab_registry_ssl_certificate }}
-  when: gitlab_registry_create_self_signed_cert | bool
+- name: Create self-signed certificate.
+  command:
+    cmd: >
+      openssl req -new -nodes -x509 -extensions v3_ca
+      -days {{ gitlab_create_self_signed_cert_duration }}
+      -subj "{{ gitlab_self_signed_cert_subj }}"
+      -addext "{{ gitlab_self_signed_san }}"
+      -keyout {{ gitlab_ssl_certificate_key }}
+      -out {{ gitlab_ssl_certificate }}
+    creates: "{{ gitlab_ssl_certificate }}"
+  when: gitlab_create_self_signed_cert | bool
 
 - name: Reconfigure Gitlab.
   template:
