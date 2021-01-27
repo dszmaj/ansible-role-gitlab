@@ -3,7 +3,7 @@ external_url "{{ gitlab_external_url }}"
 
 # GitLab registry.
 {% if gitlab_registry_enable == "true" %}
-registry['enable'] = "{{ gitlab_registry_enable }}""
+registry['enable'] = "{{ gitlab_registry_enable }}"
 registry_external_url "{{ gitlab_registry_external_url }}"
 registry_nginx['ssl_certificate'] = "{{ gitlab_registry_ssl_certificate }}"
 registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_ssl_certificate_key }}"
