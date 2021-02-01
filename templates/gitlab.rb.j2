@@ -91,7 +91,7 @@ nginx['listen_https'] = {{ gitlab_nginx_listen_https }}
 # Use smtp instead of sendmail/postfix
 # More details and example configuration at
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md
-gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable }}
+gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable | to_json }}
 {% if gitlab_smtp_enable == "true" %}
 gitlab_rails['gitlab_email_enabled'] = true
 gitlab_rails['smtp_address'] = "{{ gitlab_smtp_address }}"
