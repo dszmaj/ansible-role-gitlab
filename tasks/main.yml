@@ -60,25 +60,32 @@
     creates: /var/opt/gitlab/bootstrapped
   failed_when: false
 
-- name: Create GitLab SSL configuration folder.
-  file:
-    path: /etc/gitlab/ssl
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-  when: gitlab_create_self_signed_cert | bool
+- name: Create and install self signed certificate
+  block:
+    - name: Create GitLab SSL configuration folder.
+      file:
+        path: /etc/gitlab/ssl
+        state: directory
+        owner: root
+        group: root
+        mode: 0700
 
-- name: Create self-signed certificate.
-  command:
-    cmd: >
-      openssl req -new -nodes -x509 -extensions v3_ca
-      -days {{ gitlab_create_self_signed_cert_duration }}
-      -subj "{{ gitlab_self_signed_cert_subj }}"
-      -addext "{{ gitlab_self_signed_san }}"
-      -keyout {{ gitlab_ssl_certificate_key }}
-      -out {{ gitlab_ssl_certificate }}
-    creates: "{{ gitlab_ssl_certificate }}"
+    - name: Create self-signed certificate.
+      command:
+        cmd: >
+          openssl req -new -nodes -x509 -extensions v3_ca
+          -days {{ gitlab_create_self_signed_cert_duration }}
+          -subj "{{ gitlab_self_signed_cert_subj }}"
+          -addext "{{ gitlab_self_signed_san }}"
+          -keyout {{ gitlab_ssl_certificate_key }}
+          -out {{ gitlab_ssl_certificate }}
+        creates: "{{ gitlab_ssl_certificate }}"
+
+    - name: Trust this certificate in os
+      copy:
+        src: "{{ gitlab_ssl_certificate }}"
+        dest: "/etc/pki/ca-trust/source/anchors/{{ gitlab_domain }}.crt"
+      notify: update rhel
   when: gitlab_create_self_signed_cert | bool
 
 - name: Reconfigure Gitlab.
