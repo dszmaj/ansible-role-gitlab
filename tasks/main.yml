@@ -86,7 +86,9 @@
         src: "{{ gitlab_ssl_certificate }}"
         remote_src: yes
         dest: "/etc/pki/ca-trust/source/anchors/{{ gitlab_domain }}.crt"
-      notify: update rhel
+
+    - name: Update certs in OS
+      command: update-ca-trust
   when: gitlab_create_self_signed_cert | bool
 
 - name: Reconfigure Gitlab.
