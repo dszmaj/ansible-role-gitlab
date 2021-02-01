@@ -81,14 +81,39 @@
           -out {{ gitlab_ssl_certificate }}
         creates: "{{ gitlab_ssl_certificate }}"
 
-    - name: Trust this certificate in os
-      copy:
-        src: "{{ gitlab_ssl_certificate }}"
-        remote_src: yes
-        dest: "/etc/pki/ca-trust/source/anchors/{{ gitlab_domain }}.crt"
+    - name: Trust certs in RHEL/Centos
+      block:
+        - name: Trust this certificate in RHEL/Centos
+          copy:
+            src: "{{ gitlab_ssl_certificate }}"
+            remote_src: yes
+            dest: "/etc/pki/ca-trust/source/anchors/{{ gitlab_domain }}.crt"
+          register: rhel_cert
 
-    - name: Update certs in OS
-      command: update-ca-trust
+        - name: Update certs in OS
+          command: update-ca-trust
+          when: rhel_cert.changed
+      when: ansible_os_family == 'RedHat'
+
+    - name: Trust certs in Debian/Ubuntu
+      block:
+        - name: Create directory for own trusted certs
+          file:
+            path: /usr/local/share/ca-certificates/extra
+            state: directory
+
+        - name: Trust this certificate in Debian/Ubuntu
+          copy:
+            src: "{{ gitlab_ssl_certificate }}"
+            remote_src: yes
+            dest: "/usr/local/share/ca-certificates/extra/{{ gitlab_domain }}.crt"
+          register: debian_cert
+
+        - name: Update certs in OS
+          command: update-ca-certificates
+          when: debian_cert.changed
+      when: ansible_os_family == 'Debian'
+
   when: gitlab_create_self_signed_cert | bool
 
 - name: Reconfigure Gitlab.
