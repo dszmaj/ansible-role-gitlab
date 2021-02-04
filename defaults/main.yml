@@ -78,6 +78,7 @@ gitlab_dependencies:
   - curl
   - openssl
   - tzdata
+  - gnupg2
 
 # Optional settings.
 gitlab_time_zone: "UTC"
