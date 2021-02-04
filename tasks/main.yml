@@ -110,7 +110,7 @@
           register: debian_cert
 
         - name: Update certs in OS
-          command: update-ca-certificates
+          command: update-ca-certificates --fresh
           when: debian_cert.changed
       when: ansible_os_family == 'Debian'
 
