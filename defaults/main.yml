@@ -61,8 +61,6 @@ gitlab_ldap_attributes:
 gitlab_smtp_enable: false
 gitlab_smtp_address: "smtp.server"
 gitlab_smtp_port: "465"
-gitlab_smtp_user_name: "smtp user"
-gitlab_smtp_password: "smtp password"
 
 # 2-way SSL Client Authentication support.
 gitlab_nginx_ssl_verify_client: ""
